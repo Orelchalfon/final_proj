@@ -66,7 +66,7 @@ const UpdatePlacePage = () => {
       <div className="center">
         <Card sx={{ padding: ".75rem" }}>
           <h2>{`could'nt find place`}</h2>
-        </Card>f
+        </Card>
       </div>
     );
   }
