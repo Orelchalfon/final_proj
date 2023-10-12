@@ -3,6 +3,7 @@ import { Paper } from "@mui/material";
 
 import UsersItemList from "../components/UsersItemList";
 import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
+import { motion } from "framer-motion";
 
 export default function UsersPage() {
   const { users } = useContext(PlaceShareContext);
@@ -17,7 +18,14 @@ export default function UsersPage() {
         paddingBlock: "1rem",
       }}
     >
-      <UsersItemList users={users} />
+      <motion.div
+    
+        initial="hidden"
+      animate="visible"
+        exit="hidden"
+        style={{ width: "100%", height: "100%" }}>
+        <UsersItemList users={users} />
+      </motion.div>
     </Paper>
   );
 }

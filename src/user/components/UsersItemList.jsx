@@ -1,10 +1,11 @@
 /* eslint-disable react/prop-types */
 import UserItem from "./UserItem";
 import "./UsersItemList.css";
+import {  motion } from "framer-motion";
 
 const UsersItemList = ({ users }) => {
   if (users.length === 0) return <div>UsersNotFound</div>;
-  const usersList = users.map((user, index) => {
+  const usersList = users.map((user) => {
     return (
       <UserItem
         key={user.id}
@@ -13,10 +14,22 @@ const UsersItemList = ({ users }) => {
         email={user.email}
         imgUrl={user.imgUrl}
         count={user.count}
-        animateTime={index * 150}
       />
     );
   });
-  return <ul className="users-list">{usersList}</ul>;
+  return (
+    <motion.ul
+      className="users-list"
+      variants={{
+        visible: {
+          transition: {
+            staggerChildren: 0.1,
+          },
+        },
+      }}
+    >
+      {usersList}
+    </motion.ul>
+  );
 };
 export default UsersItemList;

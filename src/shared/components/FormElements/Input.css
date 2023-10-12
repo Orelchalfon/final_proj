@@ -47,9 +47,19 @@
 .form-control :where(textarea, input, label) {
   display: block;
 }
-
-.form-control label {
+:is(.form-control) label {
   font-weight: bold;
+
+  margin-bottom: 0.5rem;
+  scale: 1;
+  color: #000000;
+  transition: all 0.5s;
+}
+
+:is(.form-control):has(input[value=""]:not(:is(:focus))) label {
+  font-weight: 600;
+  translate: -5px 33px;
+  scale: .9;
   margin-bottom: 0.5rem;
   color: #000000;
 }

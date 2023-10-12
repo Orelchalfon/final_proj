@@ -3,13 +3,7 @@
 import React from "react";
 import { useState } from "react";
 import { createContext } from "react";
-import {
-  orelProf,
-  kobiProf,
-  sapirProf,
-  alonProf,
-  amitProf,
-} from "../../shared/img/imgsPath.js";
+import imgs from "../../assets/imgs";
 import Place from "../../shared/models/Place";
 import User from "../models/User";
 const initialPlaces = [
@@ -63,11 +57,11 @@ const initialPlaces = [
   ),
 ];
 const initialUsers = [
-  new User("u1", "orel", "orelchalfon@gmail.com", "111111", orelProf, 1),
-  new User("u2", "sapir", "sapir@gmail.com ", "222222", sapirProf, 2),
-  new User("u3", "kobi", "kobi@gmail.com ", "333333", kobiProf, 1),
-  new User("u4", "alon", "alon@gmail.com", "444444", alonProf, 2),
-  new User("u5", "amit", "amit@gmail.com ", "555555", amitProf, 2),
+  new User("u1", "orel", "orelchalfon@gmail.com", "111111", imgs[0].src, 1),
+  new User("u2", "sapir", "sapir@gmail.com ", "222222", imgs[1].src, 2),
+  new User("u3", "kobi", "kobi@gmail.com ", "333333", imgs[2].src, 1),
+  new User("u4", "alon", "alon@gmail.com", "444444", imgs[3].src, 2),
+  new User("u5", "amit", "amit@gmail.com ", "555555", imgs[4].src, 2),
 ];
 
 export const PlaceShareContext = createContext({
