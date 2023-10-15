@@ -17,7 +17,7 @@ function App() {
       <main>
         <Routes>
           {/* <Route path="/users" exact element={WelcomeScreen} /> */}
-          <Route path="/"  element={<UsersPage />} />
+          <Route path="/" exact  element={<UsersPage />} />
           <Route path="/:uId/places" exact element={<UsersPlacesPage />} />
           <Route path="/places/new" exact element={<NewPlacePage />} />
           <Route path="/places/:placeId" exact element={<UpdatePlacePage />} />
