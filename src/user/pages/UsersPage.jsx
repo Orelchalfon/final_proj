@@ -19,11 +19,11 @@ export default function UsersPage() {
       }}
     >
       <motion.div
-    
         initial="hidden"
-      animate="visible"
+        animate="visible"
         exit="hidden"
-        style={{ width: "100%", height: "100%" }}>
+        style={{ width: "100%", height: "100%" }}
+      >
         <UsersItemList users={users} />
       </motion.div>
     </Paper>
