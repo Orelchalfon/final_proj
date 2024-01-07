@@ -9,18 +9,15 @@ import UsersPlacesPage from "./place/pages/UsersPlacesPage";
 import NewPlacePage from "./place/pages/NewPlacePage";
 import UpdatePlacePage from "./place/pages/UpdatePlacePage";
 import AuthenticatePage from "./user/pages/AuthenticatePage";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+
 
 function App() {
-  const navigate = useNavigate();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => navigate("/"), []);
   return (
     <>
       <MainNavigation />
       <main>
-        <Routes>
+        <Routes location={UsersPage}>
           {/* <Route path="/users" exact element={WelcomeScreen} /> */}
           <Route path="/" exact element={<UsersPage />} />
           <Route path="/:uId/places" exact element={<UsersPlacesPage />} />
