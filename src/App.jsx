@@ -9,20 +9,33 @@ import UsersPlacesPage from "./place/pages/UsersPlacesPage";
 import NewPlacePage from "./place/pages/NewPlacePage";
 import UpdatePlacePage from "./place/pages/UpdatePlacePage";
 import AuthenticatePage from "./user/pages/AuthenticatePage";
-
+import { useEffect } from "react";
 
 function App() {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => {
+    document.querySelector(
+      `#googleMapsScript`
+    ).src = `https://maps.googleapis.com/maps/api/js?key=${
+      import.meta.env.VITE_GOOGLE_API_KEY
+    }&libraries=places`;
+  }, []);
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   if (!token) {
+  //     navigate("/auth");
+  //   }
+  // }, [navigate]);
   return (
     <>
       <MainNavigation />
       <main>
-        <Routes location={UsersPage}>
+        <Routes>
           {/* <Route path="/users" exact element={WelcomeScreen} /> */}
           <Route path="/" exact element={<UsersPage />} />
           <Route path="/:uId/places" exact element={<UsersPlacesPage />} />
           <Route path="/places/new" exact element={<NewPlacePage />} />
           <Route path="/places/:placeId" exact element={<UpdatePlacePage />} />
+          {/* <Route path="/places/:placeId" exact element={<UpdatePlacePage />} /> */}
           <Route path="/auth" exact element={<AuthenticatePage />} />
         </Routes>
       </main>
