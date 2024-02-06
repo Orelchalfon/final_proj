@@ -1,15 +1,18 @@
+/* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 import React from "react";
 
 import { Button, Card, useMediaQuery } from "@mui/material";
-import { useState } from "react";
-import MapModal from "../../shared/components/UIElements/MapModal";
-import Map from "../../shared/components/UIElements/Map";
-import "./PlaceItem.css";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import Map from "../../shared/components/UIElements/Map";
+import Modal from "../../shared/components/UIElements/Modal";
+import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
+import "./PlaceItem.css";
 
 const PlaceItem = (props) => {
+  const { deletePlace } = useContext(PlaceShareContext);
   const responsiveWidth = {
     width: {
       xs: 135, // theme.breakpoints.up('xs')
@@ -22,25 +25,36 @@ const PlaceItem = (props) => {
 
   const navTo = useNavigate();
   const [isHover, setIsHover] = useState({
-    view: false,
-    edit: false,
-    delete: false,
+    viewModalBtn: false,
+    editModalBtn: false,
+    deleteModalBtn: false,
+    deletePlaceBtn: false,
   });
-  const [showMap, setShowMap] = useState(false); //
-  const showMapHandler = () => {
-    setShowMap(true);
+  const [clicked, setClicked] = useState(false);
+
+  const [showModal, setShowModal] = useState(false); //
+
+  const showModalHandler = () => {
+    setShowModal(true);
   };
   const closeMapHandler = () => {
-    setShowMap(false);
+    setShowModal(false);
   };
+  const setHover = (name) => {
+    setIsHover((prevHover) => ({ ...prevHover, [name]: true }));
+  };
+  const setLeave = (name) => {
+    setIsHover((prevHover) => ({ ...prevHover, [name]: false }));
+  };
+
   return (
     <>
-      <MapModal
-        open={showMap}
+      <Modal
+        show={showModal}
         onClose={closeMapHandler}
-        title={props.address}
-        contentClass="place-item__modal-content"
-        footerClass="place-item__modal-actions"
+        header={props.address}
+        contentClass="place-item-map__modal-content"
+        footerClass="place-item-map__modal-actions"
         footer={
           <Button variant="contained" onClick={closeMapHandler}>
             CLOSE
@@ -50,7 +64,38 @@ const PlaceItem = (props) => {
         <div className="map-container">
           <Map center={props.coordinates} zoom={16} />
         </div>
-      </MapModal>
+      </Modal>
+      <Modal
+        show={clicked}
+        onClose={() => setClicked(false)}
+        header="Are you sure?"
+        contentClass="place-item-deletion__modal-content"
+        footerClass="place-item-deletion__modal-actions"
+        footer={
+          <div>
+            <Button
+              color="error"
+              variant={isHover.deletePlaceBtn ? "outlined" : "contained"}
+              onMouseOver={() => setHover("deletePlaceBtn")}
+              onMouseLeave={() => setLeave("deletePlaceBtn")}
+              onClick={() => {
+                deletePlace(props.id);
+                setClicked(false);
+              }}
+            >
+              DELETE
+            </Button>
+            <Button variant="outlined" color="success" onClick={() => setClicked(false)}>
+              CANCEL
+            </Button>
+          </div>
+        }
+      >
+        <p>
+          Do you want to proceed and delete this place? Please note that it
+          can't be undone thereafter.
+        </p>
+      </Modal>
       <li className="place-item">
         <Card className="place-item__content">
           <div className="place-item__image">
@@ -64,28 +109,29 @@ const PlaceItem = (props) => {
           <div className="place-item__actions">
             <Button
               sx={responsiveWidth}
-              variant={isHover.view ? "outlined" : "contained"}
               color="success"
-              onMouseOver={() => setIsHover({ ...isHover, view: true })}
-              onMouseLeave={() => setIsHover({ ...isHover, view: false })}
-              onClick={showMapHandler}
+              variant={isHover.viewModalBtn ? "outlined" : "contained"}
+              onMouseOver={() => setHover("viewModalBtn")}
+              onMouseLeave={() => setLeave("viewModalBtn")}
+              onClick={showModalHandler}
             >
               View on Map
             </Button>
             <Button
-              variant={isHover.edit ? "contained" : "outlined"}
               color="primary"
-              onMouseOver={() => setIsHover({ ...isHover, edit: true })}
-              onMouseLeave={() => setIsHover({ ...isHover, edit: false })}
+              variant={isHover.editModalBtn ? "contained" : "outlined"}
+              onMouseOver={() => setHover("editModalBtn")}
+              onMouseLeave={() => setLeave("editModalBtn")}
               onClick={() => navTo(`/places/${props.id}`)}
             >
               Edit
             </Button>
             <Button
-              variant={isHover.delete ? "contained" : "outlined"}
               color="error"
-              onMouseOver={() => setIsHover({ ...isHover, delete: true })}
-              onMouseLeave={() => setIsHover({ ...isHover, delete: false })}
+              variant={isHover.deleteModalBtn ? "contained" : "outlined"}
+              onMouseOver={() => setHover("deleteModalBtn")}
+              onMouseLeave={() => setLeave("deleteModalBtn")}
+              onClick={() => setClicked((prevClick) => !prevClick)}
             >
               Delete
             </Button>

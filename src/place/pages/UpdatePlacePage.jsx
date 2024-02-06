@@ -8,14 +8,14 @@ import {
 } from "../../shared/utils/validators";
 import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
 import { useForm } from "../../shared/hooks/FormHook";
-import { Button, Card, IconButton } from "@mui/material";
+import { Button, Card, Grid, IconButton } from "@mui/material";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUpload } from "@fortawesome/free-solid-svg-icons";
 
 import "./NewPlacePage.css";
 import { useEffect } from "react";
 import { useState } from "react";
-import { HashLoader } from "react-spinners";
+import { GridLoader } from "react-spinners";
 const UpdatePlacePage = () => {
   const { placeId } = useParams();
 
@@ -40,7 +40,7 @@ const UpdatePlacePage = () => {
   const chosenPlace = places.find((place) => place.id === placeId);
 
   useEffect(() => {
-    chosenPlace &&
+    if (chosenPlace)
       setFormData(
         {
           title: {
@@ -54,29 +54,33 @@ const UpdatePlacePage = () => {
         },
         true
       );
-    setFormIsLoading(false);
+
+    setInterval(() => {
+      setFormIsLoading(false);
+    }, 300);
   }, [setFormData, chosenPlace]);
+
   const submitUpdateForm = (e) => {
     e.preventDefault();
     console.table(formState.inputs);
   };
+  if (formIsLoading) {
+    return (
+      <div className="center">
+        <GridLoader color="#d64a36" loading={formIsLoading} size={40} />
+      </div>
+    );
+  }
 
   if (!chosenPlace) {
     return (
-        <div className="center">
-          <Card sx={{ padding: ".75rem" }}>
-            <h2>{`could'nt find place`}</h2>
-          </Card>
-        </div>
-      );
-    }
-    if (formIsLoading) {
-      return (
-        <div className="center">
-          <HashLoader color="#d64a36" loading={formIsLoading} size={100} />
-        </div>
-      );
-    }
+      <div className="center">
+        <Card sx={{ padding: ".75rem" }}>
+          <h2>{`could'nt find place`}</h2>
+        </Card>
+      </div>
+    );
+  } 
     return (
       <form action="" onSubmit={submitUpdateForm} className="place-form">
         <Input
@@ -115,6 +119,6 @@ const UpdatePlacePage = () => {
         {/* <Button disabled={!formState.formIsValid}>UPDATE PLACE</Button> */}
       </form>
     );
-  };
+};
 
-  export default UpdatePlacePage;
+export default UpdatePlacePage;
