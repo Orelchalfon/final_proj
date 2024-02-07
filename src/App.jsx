@@ -1,15 +1,15 @@
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 
 import "./App.css";
 
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
 
-import UsersPage from "./user/pages/UsersPage";
-import UsersPlacesPage from "./place/pages/UsersPlacesPage";
+import { useEffect } from "react";
 import NewPlacePage from "./place/pages/NewPlacePage";
 import UpdatePlacePage from "./place/pages/UpdatePlacePage";
+import UsersPlacesPage from "./place/pages/UsersPlacesPage";
 import AuthenticatePage from "./user/pages/AuthenticatePage";
-import { useEffect } from "react";
+import UsersPage from "./user/pages/UsersPage";
 
 function App() {
   useEffect(() => {
