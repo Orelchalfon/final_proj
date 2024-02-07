@@ -1,40 +1,43 @@
 /* eslint-disable react/prop-types */
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { CSSTransition } from 'react-transition-group';
+import React from "react";
+import ReactDOM from "react-dom";
+import { CSSTransition } from "react-transition-group";
 
-import Backdrop from './BackDrop';
-import './Modal.css';
+import Backdrop from "./BackDrop"; // Add missing import statement for Backdrop component
+import "./Modal.css";
 
-const ModalOverlay = props => {
+const ModalOverlay = ({
+  className,
+  style,
+  onSubmit,
+  children,
+  headerClass,
+  header,
+  contentClass,
+  footerClass,
+  footer,
+}) => {
   const content = (
-    <div className={`modal ${props.className}`} style={props.style}>
-      <header className={`modal__header ${props.headerClass}`}>
-        <h2>{props.header}</h2>
+    <div className={`modal ${className}`} style={style}>
+      <header className={`modal__header ${headerClass}`}>
+        <h2>{header}</h2>
       </header>
-      <form
-        onSubmit={
-          props.onSubmit ? props.onSubmit : event => event.preventDefault()
-        }
-      >
-        <div className={`modal__content ${props.contentClass}`}>
-          {props.children}
-        </div>
-        <footer className={`modal__footer ${props.footerClass}`}>
-          {props.footer}
-        </footer>
+      <form onSubmit={onSubmit ? onSubmit : (event) => event.preventDefault()}>
+        <div className={`modal__content ${contentClass}`}>{children}</div>
+        <footer className={`modal__footer ${footerClass}`}>{footer}</footer>
       </form>
     </div>
   );
-  return ReactDOM.createPortal(content, document.getElementById('modal-hook'));
+  return ReactDOM.createPortal(content, document.getElementById("modal"));
 };
 
-const Modal = props => {
+const Modal = (props) => {
+  const { show, onCancel } = props;
   return (
     <React.Fragment>
-      {props.show && <Backdrop onClick={props.onCancel} />}
+      {show && <Backdrop onClick={onCancel} />}
       <CSSTransition
-        in={props.show}
+        in={show}
         mountOnEnter
         unmountOnExit
         timeout={200}
