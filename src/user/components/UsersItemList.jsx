@@ -1,11 +1,12 @@
 /* eslint-disable react/prop-types */
 import UserItem from "./UserItem";
 import "./UsersItemList.css";
-import {  motion } from "framer-motion";
+import { motion } from "framer-motion";
 
-const UsersItemList = ({ users }) => {
+const UsersItemList = ({ users, places }) => {
   if (users.length === 0) return <div>UsersNotFound</div>;
   const usersList = users.map((user) => {
+    const userPlaces = places.filter((place) => place.creator === user.id);
     return (
       <UserItem
         key={user.id}
@@ -13,7 +14,7 @@ const UsersItemList = ({ users }) => {
         name={user.name}
         email={user.email}
         imgUrl={user.imgUrl}
-        count={user.count}
+        count={userPlaces.length}
       />
     );
   });

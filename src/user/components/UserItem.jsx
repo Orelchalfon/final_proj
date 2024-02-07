@@ -1,6 +1,6 @@
 import { Avatar, Card } from "@mui/material";
-import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
 
 import "./UserItem.css";
 const UserItem = (user) => {
@@ -26,7 +26,8 @@ const UserItem = (user) => {
           <div className="user-item__info">
             <h2>{user.name}</h2>
             <h3>
-              {user.count} {user.count > 1 ? "places" : "place"}
+              {(user.count < 1 && "No") || user.count}{" "}
+              {user.count === 0 || user.count > 1 ? "Places" : "Place"}
             </h3>
           </div>
         </Link>

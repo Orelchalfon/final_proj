@@ -1,12 +1,12 @@
-import { useContext } from "react";
 import { Paper } from "@mui/material";
+import { useContext } from "react";
 
-import UsersItemList from "../components/UsersItemList";
-import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
 import { motion } from "framer-motion";
+import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
+import UsersItemList from "../components/UsersItemList";
 
 export default function UsersPage() {
-  const { users } = useContext(PlaceShareContext);
+  const { users,places } = useContext(PlaceShareContext);
   return (
     <Paper
       elevation={0}
@@ -24,7 +24,7 @@ export default function UsersPage() {
         exit="hidden"
         style={{ width: "100%", height: "100%" }}
       >
-        <UsersItemList users={users} />
+        <UsersItemList users={users} places={places} />
       </motion.div>
     </Paper>
   );
