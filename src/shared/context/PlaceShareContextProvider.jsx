@@ -1,9 +1,8 @@
 /* eslint-disable react/prop-types */
 /* eslint-disable no-unused-vars */
 
-import React from "react";
-import { useState } from "react";
-import { createContext } from "react";
+import { bool } from "prop-types";
+import React, { createContext, useState } from "react";
 import imgs from "../../assets/imgs";
 import Place from "../../shared/models/Place";
 import User from "../models/User";
@@ -65,25 +64,42 @@ const initialUsers = [
   new User("u5", "amit", "amit@gmail.com ", "555555", imgs[4].src, 2),
 ];
 
+/**  NOTE
+ * Initial create Context is just for helping the development process {autocomplete}
+ 
+ */
 export const PlaceShareContext = createContext({
+  isLoggedIn: false,
+  login: () => {},
+  logout: () => {},
   users: [],
-  setUsers: () => {},
   places: [],
-  setPlaces: () => {},
+
   addPlace: (placeId) => {},
   updatePlace: (placeId) => {},
-
   deletePlace: (placeId) => {},
+
+  setPlaces: () => {},
+  setUsers: () => {},
 });
 
 const PlaceShareContextProvider = ({ children }) => {
-  const [initUsers, setInitUsers] = useState(initialUsers);
-  const [initPlaces, setInitPlaces] = useState(initialPlaces);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const [users, setUsers] = useState(initialUsers);
+  const [places, setPlaces] = useState(initialPlaces);
+
+  const login = () => {
+    setIsLoggedIn(true);
+  };
+  const logout = () => {
+    setIsLoggedIn(false);
+  };
   const addPlace = (place) => {
-    setInitPlaces((prevPlaces) => [...prevPlaces, place]);
+    setPlaces((prevPlaces) => [...prevPlaces, place]);
   };
   const updatePlace = (place) => {
-    setInitPlaces((prevPlaces) => {
+    setPlaces((prevPlaces) => {
       const placeIndex = prevPlaces.findIndex((p) => p.id === place.id);
       const updatedPlaces = [...prevPlaces];
       updatedPlaces[placeIndex] = place;
@@ -91,16 +107,19 @@ const PlaceShareContextProvider = ({ children }) => {
     });
   };
   const deletePlace = (placeId) => {
-    setInitPlaces((prevPlaces) => prevPlaces.filter((p) => p.id !== placeId));
+    setPlaces((prevPlaces) => prevPlaces.filter((p) => p.id !== placeId));
   };
 
   return (
     <PlaceShareContext.Provider
       value={{
-        users: initUsers,
-        setUsers: setInitUsers,
-        places: initPlaces,
-        setPlaces: setInitPlaces,
+        isLoggedIn,
+        login,
+        logout,
+        users,
+        setUsers,
+        places,
+        setPlaces,
         addPlace,
         updatePlace,
         deletePlace,

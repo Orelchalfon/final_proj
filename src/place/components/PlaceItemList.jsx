@@ -3,17 +3,47 @@ import PlaceItem from "./PlaceItem";
 
 import { Card } from "@mui/material";
 
-import "./PlaceItemList.css";
+import { useContext, useState } from "react";
 import Button from "../../shared/components/UIElements/Button";
+import Modal from "../../shared/components/UIElements/Modal";
+import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
+import "./PlaceItemList.css";
 
 const PlaceItemList = (props) => {
+  const { isLoggedIn } = useContext(PlaceShareContext);
+  const [showModal, setShowModal] = useState(false);
+  const openModalHandler = () => setShowModal(true);
+  const closeModalHandler = () => setShowModal(false);
   if (props.items.length === 0) {
     return (
       <div className="place-list center">
-        <Card sx={{ padding: ".75rem" }}>
-          <h2>No places found. Maybe create one?</h2>
-          <Button to="/places/new">Share Place</Button>
-        </Card>
+        <>
+          <Modal
+            show={showModal}
+            onCancel={closeModalHandler}
+            header="Sign In Required"
+            contentClass="place-items__modal-content"
+            headerClass="place-items__modal-header"
+            footerClass="place-items__modal-actions"
+            footer={
+              <div>
+                <Button to="/place/new" inverse onClick={closeModalHandler}>
+                  Close
+                </Button>
+                <Button to="/auth">Sign-In</Button>
+              </div>
+            }
+          >
+            <h2>You need to sign in to share a place.</h2>
+          </Modal>
+          <Card sx={{ padding: ".75rem" }}>
+            <h2>No places found. Maybe create one?</h2>
+            {isLoggedIn && <Button to="/place/new">Share Place</Button>}
+            {!isLoggedIn && (
+              <Button onClick={openModalHandler}>Share Place</Button>
+            )}
+          </Card>
+        </>
       </div>
     );
   }

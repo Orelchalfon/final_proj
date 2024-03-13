@@ -1,43 +1,57 @@
-import { Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 
 import "./App.css";
 
 import MainNavigation from "./shared/components/Navigation/MainNavigation";
 
-import { useEffect } from "react";
+import { useContext } from "react";
 import NewPlacePage from "./place/pages/NewPlacePage";
 import UpdatePlacePage from "./place/pages/UpdatePlacePage";
 import UsersPlacesPage from "./place/pages/UsersPlacesPage";
+import { PlaceShareContext } from "./shared/context/PlaceShareContextProvider";
 import AuthenticatePage from "./user/pages/AuthenticatePage";
 import UsersPage from "./user/pages/UsersPage";
 
 function App() {
-  useEffect(() => {
-    document.querySelector(
-      `#googleMapsScript`
-    ).src = `https://maps.googleapis.com/maps/api/js?key=${
-      import.meta.env.VITE_GOOGLE_API_KEY
-    }&libraries=places`;
-  }, []);
+  const { isLoggedIn } = useContext(PlaceShareContext);
   // useEffect(() => {
   //   const token = localStorage.getItem("token");
   //   if (!token) {
   //     navigate("/auth");
   //   }
   // }, [navigate]);
+  //
+  let routes;
+  if (isLoggedIn) {
+    routes = (
+      <>
+        <Route path="/" element={<UsersPage />} exact />
+        <Route path="/:uId/places" element={<UsersPlacesPage />} exact />
+        <Route path="/places/new" element={<NewPlacePage />} exact />
+        <Route path="/places/:placeId" element={<UpdatePlacePage />} exact />
+      </>
+    );
+  } else {
+    routes = (
+      <>
+        <Route path="/" element={<UsersPage />} exact />
+        <Route path="/:uId/places" element={<UsersPlacesPage />} exact />
+        <Route path="/auth" element={<AuthenticatePage />} exact />
+      </>
+    );
+
+    console.log(`isLoggedIn: ${isLoggedIn}`);
+  }
   return (
     <>
       <MainNavigation />
       <main>
-        <Routes>
-          {/* <Route path="/users" exact element={WelcomeScreen} /> */}
-          <Route path="/" exact element={<UsersPage />} />
-          <Route path="/:uId/places" exact element={<UsersPlacesPage />} />
-          <Route path="/places/new" exact element={<NewPlacePage />} />
-          <Route path="/places/:placeId" exact element={<UpdatePlacePage />} />
-          {/* <Route path="/places/:placeId" exact element={<UpdatePlacePage />} /> */}
-          <Route path="/auth" exact element={<AuthenticatePage />} />
-        </Routes>
+        {
+          <Routes>
+            {routes}
+            <Route path="*" element={<Navigate to="/" replace />} />
+          </Routes>
+        }
       </main>
     </>
   );

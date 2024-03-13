@@ -4,7 +4,7 @@
 import React from "react";
 
 import { Button, Card, useMediaQuery } from "@mui/material";
-import { useContext, useState } from "react";
+import { Fragment, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Map from "../../shared/components/UIElements/Map";
 import Modal from "../../shared/components/UIElements/Modal";
@@ -12,7 +12,7 @@ import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvide
 import "./PlaceItem.css";
 
 const PlaceItem = (props) => {
-  const { deletePlace } = useContext(PlaceShareContext);
+  const { isLoggedIn, deletePlace } = useContext(PlaceShareContext);
   const responsiveWidth = {
     width: {
       xs: 135, // theme.breakpoints.up('xs')
@@ -85,7 +85,11 @@ const PlaceItem = (props) => {
             >
               DELETE
             </Button>
-            <Button variant="outlined" color="success" onClick={() => setClicked(false)}>
+            <Button
+              variant="outlined"
+              color="success"
+              onClick={() => setClicked(false)}
+            >
               CANCEL
             </Button>
           </div>
@@ -117,24 +121,28 @@ const PlaceItem = (props) => {
             >
               View on Map
             </Button>
-            <Button
-              color="primary"
-              variant={isHover.editModalBtn ? "contained" : "outlined"}
-              onMouseOver={() => setHover("editModalBtn")}
-              onMouseLeave={() => setLeave("editModalBtn")}
-              onClick={() => navTo(`/places/${props.id}`)}
-            >
-              Edit
-            </Button>
-            <Button
-              color="error"
-              variant={isHover.deleteModalBtn ? "contained" : "outlined"}
-              onMouseOver={() => setHover("deleteModalBtn")}
-              onMouseLeave={() => setLeave("deleteModalBtn")}
-              onClick={() => setClicked((prevClick) => !prevClick)}
-            >
-              Delete
-            </Button>
+            {isLoggedIn && (
+              <Fragment>
+                <Button
+                  color="primary"
+                  variant={isHover.editModalBtn ? "contained" : "outlined"}
+                  onMouseOver={() => setHover("editModalBtn")}
+                  onMouseLeave={() => setLeave("editModalBtn")}
+                  onClick={() => navTo(`/places/${props.id}`)}
+                >
+                  Edit
+                </Button>
+                <Button
+                  color="error"
+                  variant={isHover.deleteModalBtn ? "contained" : "outlined"}
+                  onMouseOver={() => setHover("deleteModalBtn")}
+                  onMouseLeave={() => setLeave("deleteModalBtn")}
+                  onClick={() => setClicked((prevClick) => !prevClick)}
+                >
+                  Delete
+                </Button>
+              </Fragment>
+            )}
           </div>
         </Card>
       </li>

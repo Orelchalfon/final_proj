@@ -1,15 +1,16 @@
 import { Button, Card, colors } from "@mui/material";
 
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Input from "../../shared/components/FormElements/Input";
+import { PlaceShareContext } from "../../shared/context/PlaceShareContextProvider";
 import { useForm } from "../../shared/hooks/FormHook";
 import { VALIDATOR_EMAIL, VALIDATOR_PASS } from "../../shared/utils/validators";
 import { VALIDATOR_REQUIRE } from "./../../shared/utils/validators";
 import "./AuthenticatePage.css";
 
 const AuthenticatePage = () => {
-  const [isLogin, setIsLogin] = useState(false);
-
+  const [isLogin, setIsLogin] = useState(true);
+  const { login } = useContext(PlaceShareContext);
   const [formState, inputHandler, setFormData] = useForm(
     {
       name: {
@@ -102,6 +103,7 @@ const AuthenticatePage = () => {
         </IconButton> */}
 
         <Button
+          onClick={() => login()}
           color="primary"
           sx={{
             ":hover": {

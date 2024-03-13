@@ -40,8 +40,10 @@
     top: 30vh;
     width: max(30rem, 40%);
   }
-  .place-item-deletion__modal-content {
-    padding: 1rem;
+  .modal:has(.place-items__modal-content) {
+    width: clamp(20rem, 40%, 30rem);
+    top: clamp(10%, 20%, 30%);
+    left: clamp(10%, 30%, 40%);
   }
 }
 
