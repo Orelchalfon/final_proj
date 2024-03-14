@@ -50,6 +50,7 @@ function App() {
           <Routes>
             {routes}
             <Route path="*" element={<Navigate to="/" replace />} />
+
           </Routes>
         }
       </main>

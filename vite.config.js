@@ -3,6 +3,6 @@ import { defineConfig } from "vite";
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: "/final_proj",
+  base: "/final_proj/",
   plugins: [react()],
 });
